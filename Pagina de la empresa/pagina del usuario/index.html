@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YVC — Tu App de Estilo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-dark: #0b0a13;
+      --accent: #8e44ad;
+      --accent-light: #b06bf8;
+      --accent-blue: #667eea;
+      --text-light: #f1f1f1;
+      --text-muted: #b3b3b3;
+      --card-bg: #18152a;
+      --hover-glow: rgba(176, 107, 248, 0.1);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      overflow-x: hidden;
+      transition: background 0.5s ease;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1rem 3rem;
+      background: rgba(15, 10, 25, 0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      color: var(--accent-light);
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:hover {
+      color: var(--accent-light);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent-light);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .btn-nav {
+      background: var(--accent);
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-weight: 600;
+    }
+
+    .btn-nav:hover {
+      background: var(--accent-light);
+      color: var(--bg-dark);
+    }
+
+    /* Secciones */
+    .section {
+      display: none;
+      min-height: 100vh;
+      padding: 6rem 2rem 3rem;
+      animation: fadeIn 0.6s ease-in-out;
+      transition: opacity 0.5s ease;
+    }
+
+    .section.active {
+      display: block;
+      opacity: 1;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--accent-light);
+      text-align: center;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--accent-light);
+      border-radius: 2px;
+    }
+
+    /* HERO */
+    .hero {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .hero-text {
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .hero-text h2 {
+      font-size: 2.5rem;
+      color: var(--accent-light);
+      line-height: 1.2;
+    }
+
+    .hero-text p {
+      color: var(--text-muted);
+      margin: 1rem 0;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .hero-img img {
+      width: 380px;
+      border-radius: 1rem;
+      box-shadow: 0 0 25px rgba(138, 67, 215, 0.3);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .hero-img img:hover {
+      transform: scale(1.03) rotate(1deg);
+      box-shadow: 0 0 35px rgba(176, 107, 248, 0.5);
+    }
+
+    /* Botones */
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 0.7rem 1.6rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3);
+    }
+
+    .btn:hover {
+      background: var(--accent-light);
+      color: var(--bg-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(176, 107, 248, 0.5);
+    }
+
+    /* GALERÍA */
+    .app-gallery {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .gallery-item {
+      width: 250px;
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px var(--hover-glow);
+      border: 1px solid var(--accent-light);
+    }
+
+    .gallery-item img {
+      border-radius: 10px;
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item img:hover {
+      transform: scale(1.05);
+    }
+
+    .gallery-item p {
+      margin-top: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    /* BENEFICIOS */
+    .benefits {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      width: 260px;
+      padding: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 25px var(--hover-glow);
+      border: 1px solid var(--accent-light);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      border-radius: 10px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .card img:hover {
+      transform: scale(1.05);
+    }
+
+    .card h3 {
+      color: var(--accent-light);
+      margin: 0.8rem 0 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* DESCARGAR */
+    .store-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .store-buttons img {
+      width: 160px;
+      transition: transform 0.3s, filter 0.3s;
+      filter: drop-shadow(0 0 5px rgba(176, 107, 248, 0.3));
+    }
+
+    .store-buttons img:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 10px rgba(176, 107, 248, 0.6));
+    }
+
+    .mockup {
+      display: block;
+      margin: 1.5rem auto;
+      width: 400px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(140, 80, 255, 0.3);
+      transition: transform 0.4s ease;
+    }
+
+    .mockup:hover {
+      transform: rotate(-1deg) scale(1.02);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      background: #120f1e;
+      padding: 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Animaciones */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      nav ul {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .hero-text {
+        max-width: 100%;
+        text-align: center;
+      }
+
+      .hero-img img {
+        width: 100%;
+        max-width: 350px;
+      }
+
+      .gallery-item,
+      .card {
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .mockup {
+        width: 90%;
+        max-width: 350px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1 class="logo">YVC</h1>
+    <nav>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#app">La App</a></li>
+        <li><a href="#beneficios">Beneficios</a></li>
+        <li><a href="#descargar" class="btn-nav">Descargar</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- INICIO -->
+  <section id="inicio" class="section active">
+    <div class="hero">
+      <div class="hero-text">
+        <h2>Tu estilo, tu identidad</h2>
+        <p>Explora el futuro de la moda digital con <strong>YVC</strong>.  
+        Gestiona tu armario, crea outfits únicos y redefine tu look diario.</p>
+        <a href="#app" class="btn">Conocer más</a>
+      </div>
+      <div class="hero-img">
+        <img src="/pagina del usuario/inicio.jpg" alt="App YVC en acción">
+      </div>
+    </div>
+  </section>
+
+  <!-- LA APP -->
+  <section id="app" class="section">
+    <h2>Descubre YVC</h2>
+    <p>Tu asistente inteligente para vestirte mejor todos los días.</p>
+    <div class="app-gallery">
+      <div class="gallery-item">
+        <img src="/pagina del usuario/escaneo completado.jpg" alt="Organiza tu ropa">
+        <p>Organiza y categoriza tus prendas fácilmente.</p>
+      </div>
+      <div class="gallery-item">
+        <img src="/pagina del usuario/recomendacion personalizada.jpg" alt="Combinaciones inteligentes">
+        <p>Recibe combinaciones automáticas según tu estilo.</p>
+      </div>
+      <div class="gallery-item">
+        <img src="/pagina del usuario/perfil.jpg" alt="Descubre tendencias">
+        <p>Mejora tu perfil a tu antojo</p>
+      </div>
+    </div>
+    <a href="#beneficios" class="btn">Ver Beneficios</a>
+  </section>
+
+  <!-- BENEFICIOS -->
+  <section id="beneficios" class="section">
+    <h2>Beneficios de Usar YVC</h2>
+    <div class="benefits">
+      <div class="card">
+        <img src="/pagina del usuario/recomendacion personalizada.jpg" alt="Ahorra tiempo">
+        <h3>Ahorra Tiempo</h3>
+        <p>Tu look ideal, listo en segundos gracias a la IA integrada.</p>
+      </div>
+      <div class="card">
+        <img src="/pagina de la empresa/img/moda.png" alt="Estilo Personal">
+        <h3>Estilo Personal</h3>
+        <p>La app aprende de ti para reflejar tu personalidad en cada outfit.</p>
+      </div>
+      <div class="card">
+        <img src="/pagina del usuario/escaneo completado.jpg" alt="Inspiración Diaria">
+        <h3>Inspiración Diaria</h3>
+        <p>Explora combinaciones y consejos que elevan tu look diario.</p>
+      </div>
+    </div>
+    <a href="#descargar" class="btn">Descargar Ahora</a>
+  </section>
+
+  <!-- Descargar -->
+  <section id="descargar" class="section">
+    <h2>Descarga la App</h2>
+    <div class="store-buttons">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play">
+    </div>
+  </section>
+
+
+  <footer>
+    <p>© 2025 YVC — Tu estilo, tu identidad.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navLinks = document.querySelectorAll("nav a");
+      const sections = document.querySelectorAll(".section");
+
+      // Función para mostrar sección específica
+      function showSection(sectionId) {
+        sections.forEach(sec => sec.classList.remove("active"));
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+          targetSection.classList.add("active");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          // Actualizar URL sin recargar
+          history.pushState(null, null, `#${sectionId}`);
+        }
+      }
+
+      // Eventos para enlaces de navegación
+      navLinks.forEach(link => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = this.getAttribute("href");
+          if (target.startsWith("#")) {
+            showSection(target.substring(1)); // Elimina el #
+          }
+        });
+      });
+
+      // Detectar cambios en el hash (botón atrás/adelante)
+      window.addEventListener("hashchange", function () {
+        const hash = window.location.hash.substring(1);
+        if (hash && document.getElementById(hash)) {
+          showSection(hash);
+        }
+      });
+
+      // Mostrar sección inicial si hay hash en la URL
+      const initialHash = window.location.hash.substring(1);
+      if (initialHash && document.getElementById(initialHash)) {
+        showSection(initialHash);
+      }
+    });
+  </script>
+
+</body>
+</html>
